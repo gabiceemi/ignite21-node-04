@@ -1,0 +1,275 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Swagger Petstore - OpenAPI 3.0",
+      "description": "This is the documentation about the Atlas API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3333"
+      }
+    ],
+    "tags": [
+      {
+        "name": "users",
+        "description": "User management",
+        "externalDocs": {
+          "description": "Find out more",
+          "url": "http://swagger.io"
+        }
+      }
+    ],
+    "paths": {
+      "/users": {
+        "post": {
+          "tags": [
+            "users"
+          ],
+          "summary": "Create a new user",
+          "description": "Add a new pet to the store",
+          "operationId": "createUser",
+          "requestBody": {
+            "description": "Create a new pet in the store",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPost"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "This email is already in use",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "This email is already in use."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "users"
+          ],
+          "summary": "List all users",
+          "operationId": "getUsers",
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "header",
+              "required": true,
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "5fd1d01e-f0d7-11ed-a05b-0242ac120003"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "User isn't an admin",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "You need to be an administrator to list all users."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/{user_id}": {
+        "get": {
+          "tags": [
+            "users"
+          ],
+          "summary": "Show an user",
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "path",
+              "required": true,
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "example": "5fd1d01e-f0d7-11ed-a05b-0242ac120003"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "User not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "User not found."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/{user_id}/admin": {
+        "patch": {
+          "tags": [
+            "users"
+          ],
+          "summary": "Make an admin user",
+          "description": "This can only be done by the logged in user.",
+          "operationId": "updateUser",
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "example": "5fd1d01e-f0d7-11ed-a05b-0242ac120003"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "User not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "example": "User not found."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "User": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "uuid",
+              "example": "5fd1d01e-f0d7-11ed-a05b-0242ac120003"
+            },
+            "name": {
+              "type": "string",
+              "example": "John"
+            },
+            "email": {
+              "type": "string",
+              "example": "john@email.com"
+            },
+            "admin": {
+              "type": "boolean",
+              "example": true
+            },
+            "created_at": {
+              "type": "string",
+              "example": "2023-05-11T00:14:12.735Z"
+            },
+            "updated_at": {
+              "type": "string",
+              "example": "2023-05-11T00:14:12.735Z"
+            }
+          }
+        },
+        "UserPost": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "John"
+            },
+            "email": {
+              "type": "string",
+              "example": "john@email.com"
+            }
+          }
+        }
+      }
+    }
+  }
